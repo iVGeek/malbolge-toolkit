@@ -73,7 +73,9 @@ class MalbolgeAssembler:
                 label = line[:-1]
                 self.labels[label] = address
             else:
-                address += 1
+                # Count words on the line as separate memory words (instruction + optional operand(s))
+                parts = line.split()
+                address += len(parts)
     
     def generate_code(self, lines):
         """Second pass - generate machine code"""
@@ -94,6 +96,16 @@ class MalbolgeAssembler:
                 # Regular instruction
                 opcode = self.INSTRUCTIONS[instruction]
                 self.program.append(opcode)
+                # If the instruction has an operand, append it as the next word
+                if len(parts) > 1:
+                    operand = parts[1]
+                    if operand.isdigit():
+                        self.program.append(int(operand))
+                    elif operand in self.labels:
+                        self.program.append(self.labels[operand])
+                    else:
+                        # allow numeric expressions like '0' or simple labels; otherwise error
+                        raise ValueError(f"Unknown operand for {instruction}: {operand}")
             elif instruction.isdigit():
                 # Direct value
                 self.program.append(int(instruction))

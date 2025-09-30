@@ -7,6 +7,7 @@ import argparse
 from .assembler.malbolge_asm import MalbolgeAssembler
 from .disassembler.malbolge_disasm import MalbolgeDisassembler
 from .debugger.malbolge_debug import MalbolgeDebugger
+from .vm.malbolge_vm import SimpleMalbolgeVM
 
 
 def main():
@@ -46,8 +47,14 @@ def main():
         # Simple execution
         with open(args.program, 'rb') as f:
             program = f.read()
-        # Basic Malbolge VM implementation would go here
-        print("Execution not fully implemented in this example")
+        vm = SimpleMalbolgeVM()
+        vm.load(program)
+        out = vm.run()
+        if out:
+            try:
+                print(out.decode('utf-8', errors='replace'))
+            except Exception:
+                print(out)
     else:
         parser.print_help()
 
