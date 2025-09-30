@@ -1,0 +1,4 @@
+# Emit ASCII 'A' then halt
+mov 65
+out 65
+hlt
