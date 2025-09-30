@@ -1,0 +1,4 @@
+# cat program concept - read input and echo
+in
+out
+jmp 0
