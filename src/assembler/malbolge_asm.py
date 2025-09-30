@@ -1,6 +1,6 @@
 import struct
 from .ternary_encoder import TernaryEncoder
-from .crazy_op import crazy_transform
+from .crazy_table import crz
 
 
 class MalbolgeAssembler:
@@ -134,7 +134,7 @@ class MalbolgeAssembler:
         """Encode program using Malbolge's crazy operation"""
         encoded = bytearray()
         for i, instruction in enumerate(program):
-            encoded_byte = crazy_transform(instruction, i)
+            encoded_byte = crz(instruction, i)
             encoded.append(encoded_byte)
         return bytes(encoded)
 

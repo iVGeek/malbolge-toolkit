@@ -1,4 +1,4 @@
-from ..assembler.crazy_op import crazy_transform
+from ..assembler.crazy_table import crz
 
 class FullMalbolgeVM:
     """A more featureful conceptual Malbolge VM.
@@ -33,7 +33,7 @@ class FullMalbolgeVM:
         addr = addr % max(1, len(self.memory))
         # Apply crazy transform with existing memory to mimic self-modification
         old = self.memory[addr]
-        new = crazy_transform(value, old)
+        new = crz(value, old)
         self.memory[addr] = new
 
     def step(self):
