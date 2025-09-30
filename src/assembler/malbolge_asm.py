@@ -1,5 +1,6 @@
 import struct
 from .ternary_encoder import TernaryEncoder
+from .crazy_op import crazy_transform
 
 class MalbolgeAssembler:
     """Assembles human-readable Malbolge code into binary format"""
@@ -126,7 +127,7 @@ class MalbolgeAssembler:
         
         for i, instruction in enumerate(program):
             # Apply Malbolge's encoding rules
-            encoded_byte = self.crazy_operation(instruction, i)
+            encoded_byte = crazy_transform(instruction, i)
             encoded.append(encoded_byte)
             
         return bytes(encoded)
