@@ -40,6 +40,7 @@ class FullMalbolgeVM:
         if self.pc >= len(self.memory):
             self.running = False
             return
+        instr_addr = self.pc
         instr = self.memory[self.pc]
         # decode based on our simplified opcodes
         if instr == 5:  # out
@@ -76,6 +77,20 @@ class FullMalbolgeVM:
         else:
             # treat as data / skip
             self.pc += 1
+
+        # Simple register update rules to simulate Malbolge-like registers
+        # C holds previous A, D holds previous C (very simplified)
+        self.D = self.C & 0xFF
+        self.C = self.A & 0xFF
+
+        # Self-modify the instruction cell that was just executed using crz
+        # (value written is the current PC low byte for demonstration)
+        try:
+            new_val = crz(self.memory[instr_addr], instr_addr & 0xFF)
+            self.memory[instr_addr] = new_val
+        except Exception:
+            # If crz fails for any reason, leave memory unchanged
+            pass
 
     def run(self, max_steps=100000):
         self.running = True
